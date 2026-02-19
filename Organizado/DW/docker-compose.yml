@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  postgres_source:
+    image: postgres:15
+    container_name: DW_Container
+    environment:
+      POSTGRES_DB: DW
+      POSTGRES_USER: DW
+      POSTGRES_PASSWORD: DW
+    ports:
+      - "5433:5432"
+    volumes:
+      # Ensure your .sql file is named schema.sql in the same folder
+      - ./schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - dw_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  dw_data:  
