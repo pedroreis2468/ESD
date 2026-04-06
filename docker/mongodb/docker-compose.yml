@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:6
+    container_name: mongodb_fonte
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongodb
+      MONGO_INITDB_ROOT_PASSWORD: mongodb
+      MONGO_INITDB_DATABASE: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./dados.json:/docker-entrypoint-initdb.d/dados.json:ro
+      - mongo_data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongodb_gui
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      # These credentials link the GUI to your database
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mongodb
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongodb
+      ME_CONFIG_MONGODB_URL: mongodb://mongodb:mongodb@mongodb:27017/
+      # Basic Auth for the browser login (optional)
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: pass
+
+volumes:
+  mongo_data:

@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+.venv/
+venv/
+*.log
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+metabase.db/
+src/lookup_state.json
